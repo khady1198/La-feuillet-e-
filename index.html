@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Feuilletée – Recettes de pâtisserie, avec ou sans four</title>
+<meta name="description" content="Des recettes de pâtisserie gratuites, simples à faire à la maison, avec des astuces de cuisson sans four.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fond:#F3F6EE;
+    --encre:#2B1A2E;
+    --prune:#5B2A5E;
+    --beurre:#F2C94C;
+    --pistache:#8DB580;
+    --pistache-clair:#DCE8D3;
+    --blanc:#FFFFFF;
+    --titre:'Young Serif', Georgia, serif;
+    --texte:'Nunito Sans', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--texte);background:var(--fond);color:var(--encre);line-height:1.65;font-size:17px}
+  a{color:var(--prune)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--prune);outline-offset:3px}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+
+  /* En-tête */
+  header.top{background:var(--encre);color:var(--fond);position:sticky;top:0;z-index:10}
+  header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:12px}
+  .marque{font-family:var(--titre);font-size:1.3rem;color:var(--beurre);text-decoration:none}
+  nav{display:flex;gap:4px;overflow-x:auto}
+  nav a{color:var(--fond);text-decoration:none;padding:6px 12px;border-radius:999px;font-weight:600;font-size:.95rem;white-space:nowrap}
+  nav a[aria-current="page"]{background:var(--beurre);color:var(--encre)}
+
+  /* Le feuilletage : la seule signature visuelle du site */
+  .feuilletage{height:64px;background:
+    repeating-linear-gradient(to bottom,
+      var(--beurre) 0 6px, #E3B53A 6px 8px, var(--beurre) 8px 12px,
+      #F8DE86 12px 15px, var(--beurre) 15px 22px, #E3B53A 22px 23px,
+      #F8DE86 23px 30px)}
+  .feuilletage.fin{height:22px}
+
+  /* Hero */
+  .hero{padding:48px 0 40px}
+  .hero h1{font-family:var(--titre);font-weight:400;font-size:clamp(2.6rem,11vw,4.4rem);line-height:1.02;color:var(--prune);margin-bottom:16px}
+  .hero p.lead{font-size:1.15rem;max-width:34ch;margin-bottom:24px}
+  .gratuit{display:inline-block;background:var(--pistache-clair);border:2px solid var(--pistache);padding:4px 12px;border-radius:8px;font-weight:700;font-size:.9rem;margin-bottom:18px}
+
+  .btn{display:inline-block;background:var(--prune);color:var(--blanc);padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;border:none;font-size:1rem;font-family:inherit;cursor:pointer}
+  .btn:hover{background:#44204A}
+  .btn.clair{background:transparent;color:var(--prune);border:2px solid var(--prune)}
+  .btn.wa{background:#1F8F4E}
+  .btn.wa:hover{background:#177340}
+
+  section.bloc{padding:36px 0}
+  h2{font-family:var(--titre);font-weight:400;font-size:1.7rem;line-height:1.2;margin-bottom:18px;color:var(--prune)}
+  h3{font-family:var(--titre);font-weight:400;font-size:1.25rem;margin-bottom:6px}
+
+  /* Liste de recettes */
+  .recettes{display:grid;gap:16px}
+  .recette-carte{display:block;text-decoration:none;color:inherit;background:var(--blanc);border-radius:14px;overflow:hidden;border:1px solid #D9E2D0}
+  .recette-carte:hover{border-color:var(--prune)}
+  .recette-carte .visuel{height:90px;display:flex;align-items:flex-end;padding:12px 16px;font-size:2rem}
+  .recette-carte .corps{padding:14px 16px 18px}
+  .recette-carte p{font-size:.95rem}
+  .infos{font-size:.9rem;color:#5b4b5e;margin-top:6px;font-weight:600}
+
+  /* Page recette */
+  .retour{display:inline-block;margin:24px 0 8px;font-weight:600}
+  .recette h1{font-family:var(--titre);font-weight:400;font-size:2.1rem;line-height:1.1;color:var(--prune);margin-bottom:10px}
+  .puces{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 22px}
+  .puce{background:var(--pistache-clair);border-radius:999px;padding:4px 14px;font-size:.9rem;font-weight:700}
+  .recette ul,.recette ol{padding-left:22px;margin-bottom:22px}
+  .recette li{margin-bottom:8px}
+  .conseil{background:var(--blanc);border-left:6px solid var(--beurre);padding:14px 16px;border-radius:0 10px 10px 0;margin:8px 0 24px}
+
+  /* Astuces */
+  .astuce{background:var(--blanc);border-radius:14px;padding:20px;margin-bottom:18px;border:1px solid #D9E2D0}
+  .astuce ol{padding-left:22px;margin-top:10px}
+  .astuce li{margin-bottom:6px}
+
+  /* Ebook */
+  .ebook{background:var(--prune);color:var(--fond);border-radius:16px;padding:26px 22px}
+  .ebook h2{color:var(--beurre)}
+  .ebook .prix{font-family:var(--titre);font-size:1.6rem;color:var(--beurre);margin:10px 0 16px}
+  .ebook .btn{background:var(--beurre);color:var(--encre)}
+
+  footer{background:var(--encre);color:var(--fond);padding:30px 0 90px;margin-top:40px}
+  footer a{color:var(--beurre)}
+  footer p{margin-bottom:6px;font-size:.95rem}
+
+  /* Bouton WhatsApp flottant */
+  .wa-flottant{position:fixed;right:16px;bottom:16px;background:#1F8F4E;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:20}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  @media (min-width:640px){.recettes{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marque" href="#accueil">La Feuilletée</a>
+    <nav aria-label="Menu principal" id="menu">
+      <a href="#accueil" data-page="accueil">Accueil</a>
+      <a href="#recettes" data-page="recettes">Recettes</a>
+      <a href="#astuces" data-page="astuces">Sans four</a>
+      <a href="#ebook" data-page="ebook">Ebook</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu" tabindex="-1"></main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>La Feuilletée</strong> – recettes de pâtisserie en accès libre.</p>
+    <p>Une question, une réclamation, une proposition ? <a id="lien-mail" href="#">Écris-nous</a>.</p>
+    <p id="mention-affiliation" hidden>Certains liens de ce site sont des liens d'affiliation : si tu achètes via ces liens, je touche une petite commission, sans frais en plus pour toi.</p>
+  </div>
+</footer>
+
+<a class="wa-flottant" id="wa-flottant" href="#" target="_blank" rel="noopener">WhatsApp</a>
+
+<script>
+/* ============================================================
+   À MODIFIER : tes informations (seulement ces 4 lignes)
+   ============================================================ */
+const CONFIG = {
+  whatsapp: "221709867613",          // ton numéro, avec l'indicatif, sans + ni espaces
+  ebookUrl: "https://chariow.com/",  // le lien de ton ebook sur Chariow
+  ebookPrix: "2 000 FCFA",
+  email: "khadidjatougueye5@gmail.com"
+};
+
+/* ============================================================
+   Les recettes : pour en ajouter une, copie un bloc et change le texte
+   ============================================================ */
+const RECETTES = [
+  {
+    id: "beignets-fourres",
+    titre: "Beignets fourrés moelleux",
+    emoji: "🍩",
+    couleur: "#F8DE86",
+    resume: "Des beignets bien gonflés, frits à la poêle, fourrés à ta façon.",
+    portions: "12 beignets", prep: "30 min + 1 h 30 de repos", cuisson: "10 min", four: false,
+    ingredients: [
+      "500 g de farine",
+      "60 g de sucre",
+      "7 g de levure de boulanger (1 sachet)",
+      "1 pincée de sel",
+      "2 œufs",
+      "250 ml de lait tiède",
+      "50 g de beurre fondu",
+      "De l'huile pour la friture",
+      "Pour fourrer : pâte à tartiner, confiture ou crème pâtissière"
+    ],
+    etapes: [
+      "Mélange la farine, le sucre, la levure et le sel. Ajoute les œufs, le lait tiède et le beurre fondu.",
+      "Pétris 10 minutes jusqu'à obtenir une pâte souple qui ne colle plus aux doigts.",
+      "Couvre et laisse lever 1 heure, dans un endroit tiède, jusqu'à ce que la pâte double de volume.",
+      "Étale la pâte sur 1 cm d'épaisseur et découpe des ronds d'environ 7 cm. Laisse-les reposer 30 minutes.",
+      "Chauffe l'huile à feu moyen. Fais frire les beignets 2 à 3 minutes de chaque côté, jusqu'à ce qu'ils soient dorés.",
+      "Égoutte-les sur du papier absorbant, puis fourre-les avec une poche ou une petite cuillère. Roule-les dans du sucre."
+    ],
+    conseil: "Si l'huile est trop chaude, l'extérieur brunit vite mais l'intérieur reste cru. Elle est à la bonne température quand un petit bout de pâte remonte doucement avec des bulles."
+  },
+  {
+    id: "gateau-yaourt-vapeur",
+    titre: "Gâteau au yaourt à la vapeur",
+    emoji: "🎂",
+    couleur: "#DCE8D3",
+    resume: "Un gâteau tout simple, cuit sans four dans une marmite.",
+    portions: "6 à 8 parts", prep: "10 min", cuisson: "40 à 45 min", four: false,
+    ingredients: [
+      "1 pot de yaourt nature (le pot sert de mesure)",
+      "2 pots de sucre",
+      "3 pots de farine",
+      "½ pot d'huile",
+      "3 œufs",
+      "1 sachet de levure chimique",
+      "1 sachet de sucre vanillé"
+    ],
+    etapes: [
+      "Verse le yaourt dans un saladier. Ajoute le sucre, les œufs et l'huile, puis mélange.",
+      "Ajoute la farine, la levure et la vanille. Mélange jusqu'à obtenir une pâte lisse.",
+      "Verse dans un moule beurré et fariné qui rentre dans ta marmite.",
+      "Mets un support au fond de la marmite avec un peu d'eau (le niveau de l'eau doit rester sous le moule). Pose le moule dessus.",
+      "Enveloppe le couvercle dans un torchon propre pour que la buée ne retombe pas sur le gâteau. Ferme.",
+      "Cuis à feu doux à moyen pendant 40 à 45 minutes sans ouvrir. Pique avec un couteau : il doit ressortir sec."
+    ],
+    conseil: "Ne soulève pas le couvercle pendant les 30 premières minutes : le gâteau pourrait retomber."
+  },
+  {
+    id: "fataya",
+    titre: "Fataya à la sénégalaise",
+    emoji: "🥟",
+    couleur: "#F5D3B8",
+    resume: "Des chaussons frits, croustillants, farcis au poisson.",
+    portions: "20 fataya", prep: "45 min + 30 min de repos", cuisson: "15 min", four: false,
+    ingredients: [
+      "Pâte : 500 g de farine, 1 pincée de sel, 1 cuillère à soupe d'huile, environ 250 ml d'eau",
+      "400 g de poisson sans arêtes (thon ou autre), émietté",
+      "2 oignons hachés",
+      "2 gousses d'ail",
+      "1 bouquet de persil",
+      "1 cuillère à soupe de moutarde",
+      "Piment, poivre, 1 cube",
+      "De l'huile pour la friture"
+    ],
+    etapes: [
+      "Prépare la pâte : mélange la farine, le sel et l'huile, puis ajoute l'eau petit à petit. Pétris jusqu'à une pâte souple. Laisse reposer 30 minutes.",
+      "Fais revenir les oignons dans un peu d'huile. Ajoute l'ail, le persil, le poisson, la moutarde, le piment, le poivre et le cube. Laisse cuire 10 minutes, puis refroidis.",
+      "Étale la pâte finement et découpe des ronds d'environ 10 cm.",
+      "Mets une cuillère de farce sur chaque rond, plie en demi-lune et ferme bien les bords avec une fourchette.",
+      "Fais frire dans l'huile bien chaude 3 à 4 minutes, en les retournant, jusqu'à ce qu'ils soient dorés.",
+      "Égoutte et sers chaud."
+    ],
+    conseil: "Laisse la farce refroidir complètement avant de remplir les fataya, sinon la pâte se déchire et s'ouvre à la friture."
+  },
+  {
+    id: "croissants",
+    titre: "Croissants au beurre",
+    emoji: "🥐",
+    couleur: "#F8DE86",
+    resume: "Feuilletés, dorés et croustillants dehors, moelleux dedans.",
+    portions: "10 croissants", prep: "1 h 30 de travail + repos au frais + 2 h de levée", cuisson: "15 à 18 min", four: true,
+    ingredients: [
+      "500 g de farine",
+      "60 g de sucre",
+      "10 g de sel",
+      "7 g de levure de boulanger (1 sachet)",
+      "150 ml de lait froid",
+      "100 ml d'eau froide",
+      "40 g de beurre mou (dans la pâte)",
+      "250 g de beurre sec, bien froid (pour le feuilletage)",
+      "1 œuf + 1 cuillère à soupe de lait pour dorer"
+    ],
+    etapes: [
+      "Mélange la farine, le sucre, le sel et la levure. Ajoute le lait, l'eau et les 40 g de beurre mou. Pétris 5 à 8 minutes, juste jusqu'à une pâte lisse.",
+      "Forme une boule, couvre-la et mets-la 1 heure au réfrigérateur.",
+      "Pendant ce temps, aplatis les 250 g de beurre froid en un carré d'environ 15 cm, entre deux feuilles de papier. Remets-le au frais.",
+      "Étale la pâte en un carré plus grand. Pose le beurre au centre et rabats les coins de la pâte par-dessus, comme une enveloppe, en fermant bien.",
+      "Étale en longueur (environ 60 cm), plie en trois comme une lettre. Mets 30 minutes au frais. Refais cette étape encore deux fois : 3 tours en tout, avec 30 minutes de frais entre chaque.",
+      "Étale la pâte sur 4 mm d'épaisseur et découpe de grands triangles (base d'environ 10 cm). Roule chaque triangle de la base vers la pointe, pointe en dessous.",
+      "Pose-les sur une plaque et laisse lever 1 h 30 à 2 h dans un endroit tiède mais pas chaud, jusqu'à ce qu'ils soient bien gonflés.",
+      "Badigeonne avec l'œuf battu et le lait. Cuis dans un four préchauffé à 200 °C pendant 15 à 18 minutes, jusqu'à ce qu'ils soient bien dorés."
+    ],
+    conseil: "Quand il fait chaud, le beurre fond vite et le feuilletage rate. Travaille vite, remets la pâte au frais dès qu'elle devient molle, et laisse lever dans une pièce tiède, jamais au soleil."
+  },
+  {
+    id: "pain-au-chocolat",
+    titre: "Pain au chocolat",
+    emoji: "🍫",
+    couleur: "#E7D3C7",
+    resume: "La même pâte feuilletée que les croissants, avec deux barres de chocolat.",
+    portions: "10 pains au chocolat", prep: "Pâte à croissants + 30 min de façonnage", cuisson: "15 à 18 min", four: true,
+    ingredients: [
+      "1 pâte à croissants, prête après les 3 tours (voir la recette <a href=\"#recette/croissants\">Croissants au beurre</a>)",
+      "20 barres de chocolat pâtissier (2 par pain au chocolat)",
+      "1 œuf + 1 cuillère à soupe de lait pour dorer"
+    ],
+    etapes: [
+      "Prépare la pâte comme pour les croissants, jusqu'au dernier tour inclus.",
+      "Étale la pâte sur 4 mm d'épaisseur et découpe des rectangles d'environ 8 cm sur 12 cm.",
+      "Pose une barre de chocolat près d'un bord court, roule une fois, ajoute la deuxième barre, puis finis de rouler. La fermeture doit se retrouver en dessous.",
+      "Dispose sur une plaque et laisse lever 1 h 30 à 2 h dans un endroit tiède.",
+      "Badigeonne avec l'œuf battu et le lait.",
+      "Cuis dans un four préchauffé à 190 °C pendant 15 à 18 minutes, jusqu'à ce qu'ils soient dorés."
+    ],
+    conseil: "À défaut de barres de chocolat pâtissier, utilise du chocolat noir en carrés : il tient mieux à la cuisson que du chocolat à tartiner."
+  },
+  {
+    id: "tarte-pommes",
+    titre: "Tarte aux pommes",
+    emoji: "🥧",
+    couleur: "#F5D3B8",
+    resume: "Une pâte brisée maison et des pommes fondantes à la cannelle.",
+    portions: "6 à 8 parts", prep: "30 min + 30 min de repos", cuisson: "35 à 40 min", four: true,
+    ingredients: [
+      "Pâte : 250 g de farine, 125 g de beurre froid en dés, 1 cuillère à soupe de sucre, 1 pincée de sel, environ 5 cuillères à soupe d'eau froide",
+      "4 à 5 pommes",
+      "3 cuillères à soupe de compote ou de confiture",
+      "2 cuillères à soupe de sucre",
+      "1 cuillère à café de cannelle"
+    ],
+    etapes: [
+      "Du bout des doigts, mélange la farine, le sel, le sucre et le beurre froid jusqu'à obtenir un sable. Ajoute l'eau petit à petit pour former une boule, sans trop pétrir.",
+      "Enveloppe la pâte et laisse-la reposer 30 minutes au frais.",
+      "Étale la pâte et fonce un moule. Pique le fond avec une fourchette.",
+      "Étale la compote ou la confiture sur le fond de tarte.",
+      "Épluche les pommes, coupe-les en fines tranches et dispose-les en rosace. Saupoudre de sucre et de cannelle.",
+      "Cuis dans un four préchauffé à 180 °C pendant 35 à 40 minutes, jusqu'à ce que la pâte soit dorée."
+    ],
+    conseil: "Garde le beurre bien froid et travaille la pâte rapidement : plus elle chauffe entre tes mains, moins elle sera friable."
+  },
+  {
+    id: "pizza-poele",
+    titre: "Pizza maison à la poêle",
+    emoji: "🍕",
+    couleur: "#F5D3B8",
+    resume: "Une vraie pâte à pizza, cuite dans une poêle, sans four.",
+    portions: "2 pizzas", prep: "20 min + 1 h de repos", cuisson: "12 min par pizza", four: false,
+    ingredients: [
+      "300 g de farine",
+      "7 g de levure de boulanger (1 sachet)",
+      "1 cuillère à café de sel",
+      "180 ml d'eau tiède",
+      "2 cuillères à soupe d'huile",
+      "Sauce : 4 cuillères à soupe de coulis ou concentré de tomate, 1 gousse d'ail, origan",
+      "Garniture : fromage râpé, oignon, poivron, olives, thon ou poulet"
+    ],
+    etapes: [
+      "Mélange la farine, la levure et le sel. Ajoute l'eau tiède et l'huile, puis pétris 8 minutes.",
+      "Couvre et laisse lever 1 heure jusqu'à ce que la pâte double. Partage ensuite en deux boules.",
+      "Étale chaque boule en un disque fin, de la taille de ta poêle.",
+      "Huile légèrement une poêle et chauffe à feu moyen. Cuis le disque de pâte 2 à 3 minutes, jusqu'à ce que le dessous soit doré, puis retourne-le.",
+      "Étale vite la sauce sur la face cuite, ajoute le fromage et la garniture.",
+      "Couvre et cuis à feu doux 8 à 10 minutes, jusqu'à ce que le fromage ait fondu et que le dessous soit croustillant."
+    ],
+    conseil: "Ne charge pas trop la pizza : trop de garniture empêche le dessous de cuire et le fromage de fondre correctement."
+  },
+  {
+    id: "baba-sirop",
+    titre: "Baba au sirop vanille-orange",
+    emoji: "🍮",
+    couleur: "#F8DE86",
+    resume: "Un gâteau moelleux, imbibé d'un sirop parfumé, sans alcool.",
+    portions: "10 babas", prep: "30 min + 1 h de levée", cuisson: "15 à 20 min", four: true,
+    ingredients: [
+      "250 g de farine",
+      "7 g de levure de boulanger (1 sachet)",
+      "3 œufs",
+      "50 g de sucre",
+      "1 pincée de sel",
+      "60 ml de lait tiède",
+      "80 g de beurre mou",
+      "Sirop : 500 ml d'eau, 200 g de sucre, le zeste et le jus d'une orange, 1 sachet de sucre vanillé"
+    ],
+    etapes: [
+      "Mélange la farine, la levure, le sucre et le sel. Ajoute les œufs, un par un, puis le lait tiède. Pétris 10 minutes : la pâte doit être élastique.",
+      "Incorpore le beurre mou petit à petit, en pétrissant jusqu'à ce qu'il soit absorbé.",
+      "Couvre et laisse lever 1 heure. Dégaze la pâte et répartis-la dans des moules beurrés, en les remplissant à moitié.",
+      "Laisse lever encore 30 minutes, puis cuis dans un four préchauffé à 180 °C pendant 15 à 20 minutes.",
+      "Prépare le sirop : fais chauffer l'eau, le sucre, le zeste, le jus d'orange et la vanille pendant 5 minutes.",
+      "Démoule les babas encore tièdes et plonge-les dans le sirop chaud, en les retournant, jusqu'à ce qu'ils soient bien imbibés. Égoutte-les sur une grille."
+    ],
+    conseil: "Le baba boit mieux s'il est un peu rassis : prépare-le la veille si tu peux, et garde le sirop bien chaud au moment de l'imbibage."
+  }
+];
+
+/* ============================================================
+   Astuces de cuisson sans four
+   ============================================================ */
+const ASTUCES = [
+  {
+    titre: "La cuisson à la vapeur",
+    texte: "Idéale pour les gâteaux moelleux, type gâteau au yaourt ou gâteau de riz. Il te faut une marmite avec couvercle et un moule qui rentre dedans.",
+    etapes: [
+      "Mets un support au fond de la marmite (une grille ou un petit bol retourné) et un peu d'eau.",
+      "Pose le moule sur le support : l'eau ne doit jamais toucher le moule.",
+      "Enveloppe le couvercle dans un torchon pour que la buée ne retombe pas sur le gâteau.",
+      "Cuis à feu doux à moyen, et ne soulève pas le couvercle trop tôt."
+    ]
+  },
+  {
+    titre: "La cuisson à la pierre chaude",
+    texte: "Une méthode traditionnelle pour cuire sans four : la chaleur vient du fond de la marmite, qui est chauffé avant de poser le moule.",
+    etapes: [
+      "Mets une couche de sel gros, de sable propre ou de petites pierres au fond d'une marmite épaisse.",
+      "Fais chauffer la marmite à vide, à feu moyen, pendant 10 à 15 minutes avec le couvercle.",
+      "Pose un support, puis le moule avec ta pâte, et referme.",
+      "Cuis à feu doux 40 à 50 minutes. Si le dessous brunit trop vite, baisse encore le feu."
+    ]
+  },
+  {
+    titre: "Les erreurs à éviter sans four",
+    texte: "Un four règle la température tout seul, pas une marmite. Garde un œil dessus.",
+    etapes: [
+      "Ne cuis pas à feu fort : le dessous brûle et l'intérieur reste cru.",
+      "Ne mets pas un moule qui touche les parois de la marmite.",
+      "Teste toujours la cuisson avec un couteau avant de sortir le gâteau."
+    ]
+  }
+];
+
+/* ============================================================
+   Affichage des pages
+   ============================================================ */
+const $contenu = document.getElementById("contenu");
+
+const wa = (msg) => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+
+function carteRecette(r){
+  return `
+    <a class="recette-carte" href="#recette/${r.id}">
+      <div class="visuel" style="background:${r.couleur}" aria-hidden="true">${r.emoji}</div>
+      <div class="corps">
+        <h3>${r.titre}</h3>
+        <p>${r.resume}</p>
+        <p class="infos">${r.portions} · ${r.prep}</p>
+      </div>
+    </a>`;
+}
+
+function pageAccueil(){
+  return `
+    <div class="feuilletage" aria-hidden="true"></div>
+    <div class="wrap hero">
+      <span class="gratuit">Gratuit, sans inscription</span>
+      <h1>La Feuilletée</h1>
+      <p class="lead">Des recettes de pâtisserie simples à refaire chez toi, avec ou sans four.</p>
+      <a class="btn" href="#recettes">Voir les recettes</a>
+    </div>
+    <div class="feuilletage fin" aria-hidden="true"></div>
+
+    <section class="bloc"><div class="wrap">
+      <h2>Les recettes du moment</h2>
+      <div class="recettes">${RECETTES.slice(0, 4).map(carteRecette).join("")}</div>
+      <p style="margin-top:22px"><a class="btn clair" href="#recettes">Voir les ${RECETTES.length} recettes</a></p>
+    </div></section>
+
+    <section class="bloc"><div class="wrap">
+      <h2>Pas de four ? Pas de souci.</h2>
+      <p style="margin-bottom:18px">Cuisson à la vapeur, à la pierre chaude : des méthodes qui marchent dans une simple marmite.</p>
+      <a class="btn clair" href="#astuces">Voir les astuces sans four</a>
+    </div></section>
+
+    <section class="bloc"><div class="wrap">
+      <div class="ebook">
+        <h2>Le recueil La Feuilletée</h2>
+        <p>Toutes mes recettes réunies dans un ebook à garder sur ton téléphone.</p>
+        <p class="prix">${CONFIG.ebookPrix}</p>
+        <a class="btn" href="${CONFIG.ebookUrl}" target="_blank" rel="noopener">Acheter l'ebook</a>
+      </div>
+    </div></section>
+
+    <section class="bloc"><div class="wrap">
+      <h2>Une commande ou une question ?</h2>
+      <p style="margin-bottom:18px">Écris-moi directement sur WhatsApp pour commander des gâteaux ou poser une question sur une recette.</p>
+      <a class="btn wa" href="${wa("Bonjour, je vous écris depuis le site La Feuilletée.")}" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+    </div></section>`;
+}
+
+function pageRecettes(){
+  return `
+    <div class="wrap">
+      <section class="bloc">
+        <h2>Toutes les recettes</h2>
+        <div class="recettes">${RECETTES.map(carteRecette).join("")}</div>
+        <p style="margin-top:28px">Une recette que tu aimerais voir ici ? <a href="${wa("Bonjour, j'aimerais voir cette recette sur La Feuilletée : ")}" target="_blank" rel="noopener">Dis-le-moi sur WhatsApp</a>.</p>
+      </section>
+    </div>`;
+}
+
+function pageRecette(id){
+  const r = RECETTES.find(x => x.id === id);
+  if(!r) return `<div class="wrap"><section class="bloc"><h2>Recette introuvable</h2><p><a href="#recettes">Retour aux recettes</a></p></section></div>`;
+  return `
+    <div class="wrap recette">
+      <a class="retour" href="#recettes">← Toutes les recettes</a>
+      <h1>${r.titre}</h1>
+      <p>${r.resume}</p>
+      <div class="puces">
+        <span class="puce">${r.portions}</span>
+        <span class="puce">Préparation : ${r.prep}</span>
+        <span class="puce">Cuisson : ${r.cuisson}</span>
+        ${r.four ? "" : '<span class="puce">Sans four</span>'}
+      </div>
+      <h2>Ingrédients</h2>
+      <ul>${r.ingredients.map(i => `<li>${i}</li>`).join("")}</ul>
+      <h2>Étapes</h2>
+      <ol>${r.etapes.map(e => `<li>${e}</li>`).join("")}</ol>
+      <div class="conseil"><strong>Le conseil en plus :</strong> ${r.conseil}</div>
+      <p style="margin-bottom:40px"><a class="btn wa" href="${wa("Bonjour, j'ai une question sur la recette : " + r.titre)}" target="_blank" rel="noopener">Poser une question</a></p>
+    </div>`;
+}
+
+function pageAstuces(){
+  return `
+    <div class="wrap">
+      <section class="bloc">
+        <h2>Cuire sans four</h2>
+        <p style="margin-bottom:22px">Tu n'as pas besoin d'un four pour réussir une pâtisserie. Voici les méthodes que j'utilise.</p>
+        ${ASTUCES.map(a => `
+          <div class="astuce">
+            <h3>${a.titre}</h3>
+            <p>${a.texte}</p>
+            <ol>${a.etapes.map(e => `<li>${e}</li>`).join("")}</ol>
+          </div>`).join("")}
+      </section>
+    </div>`;
+}
+
+function pageEbook(){
+  return `
+    <div class="wrap">
+      <section class="bloc">
+        <div class="ebook">
+          <h2>Le recueil La Feuilletée</h2>
+          <p>Un ebook de recettes de pâtisserie, à garder sur ton téléphone et à refaire quand tu veux, même sans connexion.</p>
+          <p class="prix">${CONFIG.ebookPrix}</p>
+          <a class="btn" href="${CONFIG.ebookUrl}" target="_blank" rel="noopener">Acheter l'ebook</a>
+        </div>
+        <p style="margin-top:22px">Un souci pour l'achat ? <a href="${wa("Bonjour, j'ai un souci pour acheter l'ebook La Feuilletée.")}" target="_blank" rel="noopener">Écris-moi sur WhatsApp</a>.</p>
+      </section>
+    </div>`;
+}
+
+function route(){
+  const hash = (location.hash || "#accueil").slice(1);
+  const [page, param] = hash.split("/");
+  let html, actif = page;
+  if(page === "recette"){ html = pageRecette(param); actif = "recettes"; }
+  else if(page === "recettes"){ html = pageRecettes(); }
+  else if(page === "astuces"){ html = pageAstuces(); }
+  else if(page === "ebook"){ html = pageEbook(); }
+  else { html = pageAccueil(); actif = "accueil"; }
+
+  $contenu.innerHTML = html;
+  document.querySelectorAll("#menu a").forEach(a => {
+    if(a.dataset.page === actif) a.setAttribute("aria-current","page");
+    else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0,0);
+}
+
+/* Liens fixes (WhatsApp flottant, e-mail) */
+document.getElementById("wa-flottant").href = wa("Bonjour, je vous écris depuis le site La Feuilletée.");
+document.getElementById("lien-mail").href = "mailto:" + CONFIG.email;
+
+/* Quand tu ajoutes des liens d'affiliation, passe ceci à true pour afficher la mention de transparence */
+const AFFILIATION_ACTIVE = false;
+document.getElementById("mention-affiliation").hidden = !AFFILIATION_ACTIVE;
+
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
